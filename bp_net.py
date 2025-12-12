@@ -28,6 +28,10 @@ y_train = torch.tensor(y_train, dtype=torch.long)
 X_test  = torch.tensor(X_test, dtype=torch.float32)
 y_test  = torch.tensor(y_test, dtype=torch.long)
 
+# ====== 可修改参数区 ======
+HIDDEN_UNITS = 32      # 隐藏层神经元个数
+LEARNING_RATE = 0.001  # 学习率
+
 # =============================
 # 2. 最简 BP 神经网络
 # =============================
@@ -50,7 +54,7 @@ model = BPNet()
 # 3. 损失函数 & 优化器
 # =============================
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.01)
+optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 # =============================
 # 4. 训练（BP 发生在这里）

@@ -34,9 +34,9 @@ y_test  = torch.tensor(y_test, dtype=torch.long)
 class BPNet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.fc1 = nn.Linear(30, 16)   # 输入层 -> 隐藏层
+        self.fc1 = nn.Linear(30, 24)   # 输入层 -> 隐藏层
         self.relu = nn.ReLU()          # 激活函数
-        self.fc2 = nn.Linear(16, 2)    # 输出层（二分类）
+        self.fc2 = nn.Linear(24, 2)    # 输出层（二分类）
 
     def forward(self, x):
         x = self.fc1(x)    # z = W1x + b1
@@ -50,7 +50,7 @@ model = BPNet()
 # 3. 损失函数 & 优化器
 # =============================
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.01)
+optimizer = optim.Adam(model.parameters(), lr=0.005)
 
 # =============================
 # 4. 训练（BP 发生在这里）

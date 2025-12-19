@@ -7,6 +7,8 @@ from sklearn.preprocessing import StandardScaler
 
 # =============================
 # 1. 加载真实乳腺癌数据
+HIDDEN_UNITS = 32      # 隐藏层神经元个数
+LEARNING_RATE = 0.005  # 学习率
 # =============================
 data = load_breast_cancer()
 X = data.data          # (569, 30)

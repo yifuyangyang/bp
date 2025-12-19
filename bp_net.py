@@ -50,7 +50,7 @@ model = BPNet()
 # 3. 损失函数 & 优化器
 # =============================
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.01)
+optimizer = optim.Adam(model.parameters(), lr=0.02)
 
 # =============================
 # 4. 训练（BP 发生在这里）

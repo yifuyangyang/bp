@@ -28,15 +28,20 @@ y_train = torch.tensor(y_train, dtype=torch.long)
 X_test  = torch.tensor(X_test, dtype=torch.float32)
 y_test  = torch.tensor(y_test, dtype=torch.long)
 
+# ====== 可修改参数区 ======
+HIDDEN_UNITS = 32      # 隐藏层神经元个数（已修改）
+LEARNING_RATE = 0.005  # 学习率（已修改）
+# ==========================
+
 # =============================
 # 2. 最简 BP 神经网络
 # =============================
 class BPNet(nn.Module):
-    def __init__(self):
+    def __init__(self, hidden_units):
         super().__init__()
-        self.fc1 = nn.Linear(30, 16)   # 输入层 -> 隐藏层
-        self.relu = nn.ReLU()          # 激活函数
-        self.fc2 = nn.Linear(16, 2)    # 输出层（二分类）
+        self.fc1 = nn.Linear(30, hidden_units)   # 输入层 -> 隐藏层
+        self.relu = nn.ReLU()                    # 激活函数
+        self.fc2 = nn.Linear(hidden_units, 2)    # 输出层（二分类）
 
     def forward(self, x):
         x = self.fc1(x)    # z = W1x + b1
@@ -44,13 +49,13 @@ class BPNet(nn.Module):
         x = self.fc2(x)    # 输出层
         return x
 
-model = BPNet()
+model = BPNet(HIDDEN_UNITS)
 
 # =============================
 # 3. 损失函数 & 优化器
 # =============================
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.01)
+optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 # =============================
 # 4. 训练（BP 发生在这里）
@@ -80,4 +85,8 @@ with torch.no_grad():
     pred = logits.argmax(dim=1)
     test_acc = (pred == y_test).float().mean().item()
 
-print("Test Accuracy =", test_acc)
+print("=" * 50)
+print(f"隐藏层神经元数: {HIDDEN_UNITS}")
+print(f"学习率: {LEARNING_RATE}")
+print(f"测试准确率: {test_acc:.4f}")
+print("=" * 50)

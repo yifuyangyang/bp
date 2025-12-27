@@ -5,6 +5,11 @@ from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+# ====== 可修改参数区 ======
+HIDDEN_UNITS = 10      # 隐藏层神经元个数
+LEARNING_RATE = 0.01  # 学习率
+# ==========================
+
 # =============================
 # 1. 加载真实乳腺癌数据
 # =============================
@@ -34,9 +39,9 @@ y_test  = torch.tensor(y_test, dtype=torch.long)
 class BPNet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.fc1 = nn.Linear(30, 16)   # 输入层 -> 隐藏层
-        self.relu = nn.ReLU()          # 激活函数
-        self.fc2 = nn.Linear(16, 2)    # 输出层（二分类）
+        self.fc1 = nn.Linear(30, HIDDEN_UNITS)   # 输入层 -> 隐藏层
+        self.relu = nn.ReLU()                    # 激活函数
+        self.fc2 = nn.Linear(HIDDEN_UNITS, 2)    # 输出层（二分类）
 
     def forward(self, x):
         x = self.fc1(x)    # z = W1x + b1
@@ -50,7 +55,7 @@ model = BPNet()
 # 3. 损失函数 & 优化器
 # =============================
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.01)
+optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 # =============================
 # 4. 训练（BP 发生在这里）
@@ -66,7 +71,7 @@ for epoch in range(1, epochs + 1):
     loss.backward()                  # 反向传播（BP）
     optimizer.step()                 # 参数更新
 
-    if epoch % 20 == 0:
+   if epoch % 200 == 0:
         pred = logits.argmax(dim=1)
         acc = (pred == y_train).float().mean().item()
         print(f"epoch={epoch:3d} loss={loss.item():.4f} acc={acc:.4f}")
@@ -81,3 +86,4 @@ with torch.no_grad():
     test_acc = (pred == y_test).float().mean().item()
 
 print("Test Accuracy =", test_acc)
+

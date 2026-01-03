@@ -1,6 +1,3 @@
-import torch
-import torch.nn as nn
-import torch.optim as optim
 from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -35,8 +32,10 @@ class BPNet(nn.Module):
     def __init__(self):
         super().__init__()
         self.fc1 = nn.Linear(30, 16)   # 输入层 -> 隐藏层
+        self.fc1 = nn.Linear(30, 32)   # 输入层 -> 隐藏层
         self.relu = nn.ReLU()          # 激活函数
         self.fc2 = nn.Linear(16, 2)    # 输出层（二分类）
+        self.fc2 = nn.Linear(32, 2)    # 输出层（二分类）
 
     def forward(self, x):
         x = self.fc1(x)    # z = W1x + b1
@@ -47,10 +46,12 @@ class BPNet(nn.Module):
 model = BPNet()
 
 # =============================
+@@ -50,7 +50,7 @@ def forward(self, x):
 # 3. 损失函数 & 优化器
 # =============================
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.01)
+optimizer = optim.Adam(model.parameters(), lr=0.1)
 
 # =============================
 # 4. 训练（BP 发生在这里）
@@ -74,10 +75,11 @@ for epoch in range(1, epochs + 1):
 # =============================
 # 5. 测试
 # =============================
-model.eval()
-with torch.no_grad():
+@@ -79,5 +67,4 @@ def forward(self, x):
     logits = model(X_test)
     pred = logits.argmax(dim=1)
     test_acc = (pred == y_test).float().mean().item()
 
 print("Test Accuracy =", test_acc)
+print("Test Accuracy =", test_acc)
+

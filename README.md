@@ -3,8 +3,8 @@
 
 ```python
 # ====== 可修改参数区 ======
-HIDDEN_UNITS = 16      # 隐藏层神经元个数
-LEARNING_RATE = 0.01  # 学习率
+HIDDEN_UNITS = 32      # 隐藏层神经元个数
+LEARNING_RATE = 0.005  # 学习率
 # ==========================
 
 

@@ -5,6 +5,8 @@ from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+HIDDEN_UNITS = 8
+LEARNING_RATE = 0.1
 # =============================
 # 1. 加载真实乳腺癌数据
 # =============================
@@ -34,9 +36,10 @@ y_test  = torch.tensor(y_test, dtype=torch.long)
 class BPNet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.fc1 = nn.Linear(30, 16)   # 输入层 -> 隐藏层
+        self.fc1 = nn.Linear(30, HIDDEN_UNITS )   # 输入层 -> 隐藏层
+
         self.relu = nn.ReLU()          # 激活函数
-        self.fc2 = nn.Linear(16, 2)    # 输出层（二分类）
+        self.fc2 = nn.Linear(HIDDEN_UNITS, 2)    # 输出层（二分类）
 
     def forward(self, x):
         x = self.fc1(x)    # z = W1x + b1
@@ -50,7 +53,8 @@ model = BPNet()
 # 3. 损失函数 & 优化器
 # =============================
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.01)
+optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+
 
 # =============================
 # 4. 训练（BP 发生在这里）
@@ -81,3 +85,5 @@ with torch.no_grad():
     test_acc = (pred == y_test).float().mean().item()
 
 print("Test Accuracy =", test_acc)
+print(f"HIDDEN_UNITS={HIDDEN_UNITS}, LEARNING_RATE={LEARNING_RATE}, Test Accuracy={test_acc:.4f}")
+
